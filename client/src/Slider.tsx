@@ -1,13 +1,9 @@
 import React from "react";
 
 interface SliderProps {
-    images: object[];
+  images: object[];
 }
 
-function Slider(props: SliderProps) {
-    return (
-        <p>Hello World</p>
-    )
-}
-
-export default Slider;
+export const Slider: React.FC<SliderProps> = () => {
+  return <p>Hello World</p>;
+};

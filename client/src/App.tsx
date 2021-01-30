@@ -1,35 +1,33 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import { getSliderImages } from "./services/slider.service";
-import Slider from "./Slider";
+import { Slider } from "./Slider";
+import { CircularProgress } from '@material-ui/core';
 
-interface AppProps {}
+interface Props {}
 
-function App({}: AppProps) {
+export const App: React.FC<Props> = () => {
   const [images, setImages] = useState<object[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    const fetchImages = async () => {
+    (async () => {
+      setIsLoading(true);
       try {
-        setIsLoading(true);
         const json = await getSliderImages();
         setImages([...json]);
         setIsLoading(false);
       } catch (err) {
         setIsError(true);
       }
-    };
-    fetchImages();
+    })();
   }, []);
 
   return (
     <div className="App">
-      {isError && <p>Something went wrong. Try to reload the page!</p>}
-      {isLoading ? <p>Loading...</p> : <Slider images={images} />}
+      {isLoading ? <CircularProgress /> : <Slider images={images} />}
+      {isError && <p>😟 Something went wrong. Try to reload the page!</p>}
     </div>
   );
-}
-
-export default App;
+};
