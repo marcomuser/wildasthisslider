@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { CircularProgress } from "@material-ui/core";
 import "./App.css";
-import { getSliderImages } from "./services/slider.service";
+import { getSliderImages, Image } from "./services/slider.service";
 import { Slider } from "./Slider";
-import { CircularProgress } from '@material-ui/core';
 
-interface Props {}
-
-export const App: React.FC<Props> = () => {
-  const [images, setImages] = useState<object[]>([]);
+export const App: React.FC = () => {
+  const [images, setImages] = useState<Image[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
