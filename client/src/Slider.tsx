@@ -29,11 +29,18 @@ export const Slider: React.FC<Props> = ({ images }) => {
 
   return (
     <div className="slider">
-      <img
-        className="slider-image"
-        src={localhost + images[active]?.formats?.medium?.url}
-        alt={images[active]?.name}
-      />
+      <picture>
+        <source
+          srcSet={localhost + images[active]?.formats?.large?.url}
+          media="(min-width: 600px)"
+        />
+        <img
+          className="slider-image"
+          src={localhost + images[active]?.formats?.medium?.url}
+          alt={images[active]?.name}
+        />
+      </picture>
+
       <div className="arrows">
         <img src={arrow} className="arrow-prev-slide" onClick={prevSlide} />
         <img src={arrow} className="arrow-next-slide" onClick={nextSlide} />
