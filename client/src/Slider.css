@@ -1,0 +1,28 @@
+.slider {
+  max-height: 680px;
+}
+
+.slider-image {
+  max-height: 680px;
+  z-index: 1;
+}
+
+.arrows {
+  display: flex;
+  justify-content: flex-end;
+  transform: translateY(-53px);
+  z-index: 2;
+  margin: 0;
+}
+
+.arrows img {
+  width: 60px;
+  background-color: white;
+  border: 0.5px lightgrey solid;
+  padding: 20px 20px;
+  margin: 0;
+}
+
+.arrow-prev-slide {
+  transform: rotate(180deg);
+}
