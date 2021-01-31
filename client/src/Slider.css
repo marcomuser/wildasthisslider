@@ -1,18 +1,28 @@
-.slider {
+main {
   max-width: 590px;
-  max-height: 680px;
+  max-height: 703.483px;
 }
 
-.slider-image {
-  max-width: 100%;
-  z-index: 1;
+.slider {
+  position: relative;
+  display: flex;
+  width: 590px;
+  height: 703.483px;
+  overflow: hidden;
+}
+
+.slider img {
+  position: absolute;
+  width: 100%;
+  object-fit: contain;
+  z-index: 0;
+  opacity: 0;
 }
 
 .arrows {
   display: flex;
   justify-content: flex-end;
   transform: translateY(-53px);
-  z-index: 2;
   margin: 0;
 }
 
@@ -22,6 +32,7 @@
   border: 0.5px lightgrey solid;
   padding: 20px 20px;
   margin: 0;
+  cursor: pointer;
 }
 
 .arrow-prev-slide {
