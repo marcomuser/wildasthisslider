@@ -1,11 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
-import { Draggable } from "gsap/Draggable";
-import type { Image } from "./services/slider.service";
-import arrow from "./assets/arrow.svg";
+import type { Image } from "../services/slider.service";
+import arrow from "../assets/arrow.svg";
 import "./Slider.css";
-import { usePrevious } from "./services/usePrevious.hook";
-gsap.registerPlugin(Draggable);
+import { usePrevious } from "../services/usePrevious.hook";
 
 interface Props {
   images: Image[];
@@ -63,7 +61,7 @@ export const Slider: React.FC<Props> = ({ images }) => {
   };
 
   return (
-    <main>
+    <section>
       <div className="slider" ref={imagesRef}>
         {images.map((image) => (
           <img
@@ -77,6 +75,6 @@ export const Slider: React.FC<Props> = ({ images }) => {
         <img src={arrow} className="arrow-prev-slide" onClick={prevSlide} />
         <img src={arrow} className="arrow-next-slide" onClick={nextSlide} />
       </div>
-    </main>
+    </section>
   );
 };

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CircularProgress } from "@material-ui/core";
 import "./App.css";
 import { getSliderImages, Image } from "./services/slider.service";
-import { Slider } from "./Slider";
+import { Slider } from "./components/Slider";
 
 export const App: React.FC = () => {
   const [images, setImages] = useState<Image[]>([]);

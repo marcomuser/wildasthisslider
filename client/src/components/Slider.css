@@ -1,4 +1,4 @@
-main {
+section {
   max-width: 590px;
   max-height: 703.483px;
 }
@@ -40,7 +40,8 @@ main {
 }
 
 @media (max-width: 600px) {
-  main, .slider {
+  section,
+  .slider {
     width: 370px;
     height: 441.183px;
   }
