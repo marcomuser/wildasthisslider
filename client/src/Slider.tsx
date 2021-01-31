@@ -34,7 +34,7 @@ export const Slider: React.FC<Props> = ({ images }) => {
       gsap.fromTo(
         imagesRef.current.children[active - 1],
         { opacity: 1, x: 0 },
-        { duration: 0.5, x: -590, opacity: 0, ease: "none" },
+        { duration: 0.5, x: -590, opacity: 0 },
       );
     } else if (active < prevActive && imagesRef?.current) {
       gsap.fromTo(

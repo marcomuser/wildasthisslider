@@ -22,7 +22,7 @@ main {
 .arrows {
   display: flex;
   justify-content: flex-end;
-  transform: translateY(-53px);
+  transform: translateY(-49px);
   margin: 0;
 }
 
@@ -37,4 +37,11 @@ main {
 
 .arrow-prev-slide {
   transform: rotate(180deg);
+}
+
+@media (max-width: 600px) {
+  main, .slider {
+    width: 370px;
+    height: 441.183px;
+  }
 }
