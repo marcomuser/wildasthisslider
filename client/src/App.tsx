@@ -25,7 +25,7 @@ export const App: React.FC = () => {
   return (
     <div className="App">
       {isLoading ? <CircularProgress /> : <Slider images={images} />}
-      {isError && <p>😟 Something went wrong. Try to reload the page!</p>}
+      {isError && <p className="error-message">😟 Something went wrong. Try to reload the page!</p>}
     </div>
   );
 };
