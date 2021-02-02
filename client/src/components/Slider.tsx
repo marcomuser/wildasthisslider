@@ -4,6 +4,9 @@ import type { Image } from "../services/slider.service";
 import arrow from "../assets/arrow.svg";
 import "./Slider.css";
 import { usePrevious } from "../services/usePrevious.hook";
+import { Draggable } from "gsap/Draggable";
+import { InertiaPlugin } from "gsap/InertiaPlugin";
+gsap.registerPlugin(Draggable, InertiaPlugin);
 
 interface Props {
   images: Image[];
@@ -19,6 +22,19 @@ export const Slider: React.FC<Props> = ({ images }) => {
 
   useEffect(() => {
     if (imagesRef?.current) {
+      Draggable.create(imagesRef.current, {
+        type: "x",
+        bounds: {
+          minX: 0,
+          maxX: imagesRef.current.clientWidth + window.innerWidth * 0.88,
+          minY: 0,
+          maxY: 0
+        },
+        inertia: true,
+        snap: function(value) {
+          return value;
+        }
+      });
     }
   }, []);
 
