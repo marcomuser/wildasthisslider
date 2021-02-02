@@ -15,36 +15,26 @@ export const Slider: React.FC<Props> = ({ images }) => {
   const [active, setActive] = useState(0);
   const prevActive = usePrevious(active);
   const imagesRef = useRef<HTMLDivElement>(null);
+  const imageWidth = imagesRef.current?.offsetWidth;
 
   useEffect(() => {
     if (imagesRef?.current) {
-      gsap.to(imagesRef.current.children[active], { duration: 0, opacity: 1 });
     }
   }, []);
 
   useEffect(() => {
-    if (active > prevActive && imagesRef?.current) {
-      gsap.fromTo(
-        imagesRef.current.children[active],
-        { opacity: 1, x: +590 },
-        { duration: 0.5, x: 0, opacity: 1 },
-      );
-      gsap.fromTo(
-        imagesRef.current.children[active - 1],
-        { opacity: 1, x: 0 },
-        { duration: 0.5, x: -590, opacity: 0 },
-      );
-    } else if (active < prevActive && imagesRef?.current) {
-      gsap.fromTo(
-        imagesRef.current.children[active],
-        { opacity: 1, x: -590 },
-        { duration: 0.5, x: 0, opacity: 1 },
-      );
-      gsap.fromTo(
-        imagesRef.current.children[active + 1],
-        { opacity: 1, x: 0 },
-        { duration: 0.5, x: 590, opacity: 0 },
-      );
+    if (active > prevActive && imagesRef?.current && imageWidth) {
+      gsap.to(imagesRef.current, {
+        duration: 0.5,
+        ease: "power3",
+        x: -imageWidth * active,
+      });
+    } else if (active < prevActive && imagesRef?.current && imageWidth) {
+      gsap.to(imagesRef.current, {
+        duration: 0.5,
+        ease: "power3",
+        x: -(imageWidth * 3) + imageWidth * (images.length - 1 - active),
+      });
     }
   }, [active]);
 
