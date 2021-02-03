@@ -18,6 +18,7 @@ export const Slider: React.FC<Props> = ({ images }) => {
   const [active, setActive] = useState(0);
   const prevActive = usePrevious(active);
   const imagesRef = useRef<HTMLDivElement>(null);
+  const dotsRef = useRef<HTMLUListElement>(null);
   const imageWidth = imagesRef.current?.offsetWidth;
 
   useEffect(() => {
@@ -28,28 +29,53 @@ export const Slider: React.FC<Props> = ({ images }) => {
           minX: 0,
           maxX: imagesRef.current.clientWidth + window.innerWidth * 0.88,
           minY: 0,
-          maxY: 0
+          maxY: 0,
         },
         inertia: true,
-        snap: function(value) {
+        snap: function (value) {
           return value;
-        }
+        },
       });
     }
   }, []);
 
   useEffect(() => {
-    if (active > prevActive && imagesRef?.current && imageWidth) {
+    if (dotsRef.current) {
+      gsap.to(dotsRef.current?.children[active], {
+        duration: 0.5,
+        ease: "power3",
+        x: -15,
+        backgroundColor: "lightgrey",
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (active > prevActive && imagesRef?.current && dotsRef?.current && imageWidth) {
       gsap.to(imagesRef.current, {
         duration: 0.5,
         ease: "power3",
         x: -imageWidth * active,
       });
-    } else if (active < prevActive && imagesRef?.current && imageWidth) {
+
+      gsap.to(dotsRef.current?.children[active], {
+        duration: 0.5,
+        ease: "power3",
+        x: -15,
+        backgroundColor: "lightgrey",
+      });
+    } else if (active < prevActive && imagesRef?.current && dotsRef?.current && imageWidth) {
       gsap.to(imagesRef.current, {
         duration: 0.5,
         ease: "power3",
         x: -(imageWidth * 3) + imageWidth * (images.length - 1 - active),
+      });
+
+      gsap.to(dotsRef.current?.children[active + 1], {
+        duration: 0.5,
+        ease: "power3",
+        x: 0,
+        backgroundColor: "hsla(197, 10%, 87%, 25%)",
       });
     }
   }, [active]);
@@ -77,9 +103,16 @@ export const Slider: React.FC<Props> = ({ images }) => {
           />
         ))}
       </div>
-      <div className="arrows">
-        <img src={arrow} className="arrow-prev-slide" onClick={prevSlide} />
-        <img src={arrow} className="arrow-next-slide" onClick={nextSlide} />
+      <div className="slider-elements">
+        <ul className="dots" ref={dotsRef}>
+          {images.map(el => (
+            <li key={el.id}></li>
+          ))}
+        </ul>
+        <div className="arrows">
+          <img src={arrow} className="arrow-prev-slide" onClick={prevSlide} />
+          <img src={arrow} className="arrow-next-slide" onClick={nextSlide} />
+        </div>
       </div>
     </section>
   );
