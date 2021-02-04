@@ -19,28 +19,25 @@ export const Slider: React.FC<Props> = ({ images }) => {
   const prevActive = usePrevious(active);
   const imagesRef = useRef<HTMLDivElement>(null);
   const dotsRef = useRef<HTMLUListElement>(null);
-  const imageWidth = imagesRef.current?.offsetWidth;
+  const imageWidth = imagesRef.current?.offsetWidth
+
 
   useEffect(() => {
-    if (imagesRef?.current) {
-      Draggable.create(imagesRef.current, {
-        type: "x",
-        bounds: {
-          minX: 0,
-          maxX: imagesRef.current.clientWidth + window.innerWidth * 0.88,
-          minY: 0,
-          maxY: 0,
-        },
-        inertia: true,
-        snap: function (value) {
-          return value;
-        },
-      });
-    }
-  }, []);
+    Draggable.create(imagesRef.current, {
+      type: "x",
+      inertia: true,
+      edgeResistance: 0.75,
+      throwResistance: 2000,
+      maxDuration: 0.2,
+      bounds: { minX: -590 * 3, maxX: 0, minY: 0, maxY: 680 },
+      snap: (value) => {
+        return Math.round(value / 590) * 590;
+      }
+    });
+  }, [])
 
   useEffect(() => {
-    if (dotsRef.current) {
+    if (dotsRef.current && imagesRef?.current) {
       gsap.to(dotsRef.current?.children[active], {
         duration: 0.5,
         ease: "power3",
