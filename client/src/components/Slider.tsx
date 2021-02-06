@@ -14,7 +14,6 @@ interface Props {
 
 export const Slider: React.FC<Props> = ({ images }) => {
   const localhost = "http://localhost:1337";
-
   const [active, setActive] = useState(0);
   const prevActive = usePrevious(active);
   const imagesRef = useRef<HTMLDivElement>(null);
@@ -35,25 +34,28 @@ export const Slider: React.FC<Props> = ({ images }) => {
       slideDotRightAnimation();
     }
 
-    Draggable.create(imagesRef.current, {
-      type: "x",
-      inertia: true,
-      edgeResistance: 0.75,
-      throwResistance: 2000,
-      maxDuration: 0.2,
-      bounds: { minX: -590 * 3, maxX: 0, minY: 0, maxY: 680 },
-      snap: (value) => {
-        snapValue = Math.round(value / 590) * 590;
-        return Math.round(value / 590) * 590;
-      },
-      onThrowComplete: () => {
-        if (active < images.length - 1 && snapValue < -590 * active) {
-          setActive(active + 1);
-        } else if (active > 0 && snapValue > -590 * active) {
-          setActive(active - 1);
-        }
-      },
-    });
+    if (imagesRef.current) {
+      const imageWidth = imagesRef.current.offsetWidth;
+      Draggable.create(imagesRef.current, {
+        type: "x",
+        inertia: true,
+        edgeResistance: 0.75,
+        throwResistance: 2000,
+        maxDuration: 0.2,
+        bounds: { minX: -imageWidth * 3, maxX: 0, minY: 0, maxY: 680 },
+        snap: (value) => {
+          snapValue = Math.round(value / imageWidth) * imageWidth;
+          return Math.round(value / imageWidth) * imageWidth;
+        },
+        onThrowComplete: () => {
+          if (active < images.length - 1 && snapValue < -imageWidth * active) {
+            setActive(active + 1);
+          } else if (active > 0 && snapValue > -imageWidth * active) {
+            setActive(active - 1);
+          }
+        },
+      });
+    }
   }, [active]);
 
   const slideLeftAnimation = () => {

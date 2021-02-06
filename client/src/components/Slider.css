@@ -53,3 +53,11 @@ section {
   padding: 0;
   margin: 2px;
 }
+
+
+@media (max-width: 600px) {
+  .slider-elements {
+    transform: translateY(-53px);
+  }
+}
+
