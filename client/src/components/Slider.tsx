@@ -59,7 +59,7 @@ export const Slider: React.FC<Props> = ({ images }) => {
   }, [active]);
 
   const slideLeftAnimation = () => {
-    if (active > prevActive && imagesRef?.current && imageWidth) {
+    if (imagesRef?.current && imageWidth) {
       gsap.to(imagesRef.current, {
         duration: 0.5,
         ease: "power3",
