@@ -23,16 +23,16 @@ export const Slider: React.FC<Props> = ({ images }) => {
   let snapValue = 0;
 
   useEffect(() => {
-    slideDotRightAnimation();
+    slideDotLeftAnimation();
   }, []);
 
   useEffect(() => {
     if (active > prevActive) {
-      slideRightAnimation();
-      slideDotRightAnimation();
-    } else if (active < prevActive) {
       slideLeftAnimation();
       slideDotLeftAnimation();
+    } else if (active < prevActive) {
+      slideRightAnimation();
+      slideDotRightAnimation();
     }
 
     Draggable.create(imagesRef.current, {
@@ -56,7 +56,7 @@ export const Slider: React.FC<Props> = ({ images }) => {
     });
   }, [active]);
 
-  const slideRightAnimation = () => {
+  const slideLeftAnimation = () => {
     if (active > prevActive && imagesRef?.current && imageWidth) {
       gsap.to(imagesRef.current, {
         duration: 0.5,
@@ -66,7 +66,7 @@ export const Slider: React.FC<Props> = ({ images }) => {
     }
   };
 
-  const slideLeftAnimation = () => {
+  const slideRightAnimation = () => {
     if (imagesRef?.current && imageWidth) {
       gsap.to(imagesRef.current, {
         duration: 0.5,
@@ -76,7 +76,7 @@ export const Slider: React.FC<Props> = ({ images }) => {
     }
   };
 
-  const slideDotRightAnimation = () => {
+  const slideDotLeftAnimation = () => {
     if (dotsRef?.current) {
       gsap.to(dotsRef.current?.children[active], {
         duration: 0.5,
@@ -87,7 +87,7 @@ export const Slider: React.FC<Props> = ({ images }) => {
     }
   };
 
-  const slideDotLeftAnimation = () => {
+  const slideDotRightAnimation = () => {
     if (dotsRef?.current) {
       gsap.to(dotsRef.current?.children[active + 1], {
         duration: 0.5,
