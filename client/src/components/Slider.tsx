@@ -19,10 +19,22 @@ export const Slider: React.FC<Props> = ({ images }) => {
   const prevActive = usePrevious(active);
   const imagesRef = useRef<HTMLDivElement>(null);
   const dotsRef = useRef<HTMLUListElement>(null);
-  const imageWidth = imagesRef.current?.offsetWidth
-
+  const imageWidth = imagesRef.current?.offsetWidth;
+  let snapValue = 0;
 
   useEffect(() => {
+    slideDotRightAnimation();
+  }, []);
+
+  useEffect(() => {
+    if (active > prevActive) {
+      slideRightAnimation();
+      slideDotRightAnimation();
+    } else if (active < prevActive) {
+      slideLeftAnimation();
+      slideDotLeftAnimation();
+    }
+
     Draggable.create(imagesRef.current, {
       type: "x",
       inertia: true,
@@ -31,13 +43,41 @@ export const Slider: React.FC<Props> = ({ images }) => {
       maxDuration: 0.2,
       bounds: { minX: -590 * 3, maxX: 0, minY: 0, maxY: 680 },
       snap: (value) => {
+        snapValue = Math.round(value / 590) * 590;
         return Math.round(value / 590) * 590;
-      }
+      },
+      onThrowComplete: () => {
+        if (active < images.length - 1 && snapValue < -590 * active) {
+          setActive(active + 1);
+        } else if (active > 0 && snapValue > -590 * active) {
+          setActive(active - 1);
+        }
+      },
     });
-  }, [])
+  }, [active]);
 
-  useEffect(() => {
-    if (dotsRef.current && imagesRef?.current) {
+  const slideRightAnimation = () => {
+    if (active > prevActive && imagesRef?.current && imageWidth) {
+      gsap.to(imagesRef.current, {
+        duration: 0.5,
+        ease: "power3",
+        x: -imageWidth * active,
+      });
+    }
+  };
+
+  const slideLeftAnimation = () => {
+    if (imagesRef?.current && imageWidth) {
+      gsap.to(imagesRef.current, {
+        duration: 0.5,
+        ease: "power3",
+        x: -(imageWidth * 3) + imageWidth * (images.length - 1 - active),
+      });
+    }
+  };
+
+  const slideDotRightAnimation = () => {
+    if (dotsRef?.current) {
       gsap.to(dotsRef.current?.children[active], {
         duration: 0.5,
         ease: "power3",
@@ -45,29 +85,10 @@ export const Slider: React.FC<Props> = ({ images }) => {
         backgroundColor: "lightgrey",
       });
     }
-  }, []);
+  };
 
-  useEffect(() => {
-    if (active > prevActive && imagesRef?.current && dotsRef?.current && imageWidth) {
-      gsap.to(imagesRef.current, {
-        duration: 0.5,
-        ease: "power3",
-        x: -imageWidth * active,
-      });
-
-      gsap.to(dotsRef.current?.children[active], {
-        duration: 0.5,
-        ease: "power3",
-        x: -15,
-        backgroundColor: "lightgrey",
-      });
-    } else if (active < prevActive && imagesRef?.current && dotsRef?.current && imageWidth) {
-      gsap.to(imagesRef.current, {
-        duration: 0.5,
-        ease: "power3",
-        x: -(imageWidth * 3) + imageWidth * (images.length - 1 - active),
-      });
-
+  const slideDotLeftAnimation = () => {
+    if (dotsRef?.current) {
       gsap.to(dotsRef.current?.children[active + 1], {
         duration: 0.5,
         ease: "power3",
@@ -75,7 +96,7 @@ export const Slider: React.FC<Props> = ({ images }) => {
         backgroundColor: "hsla(197, 10%, 87%, 25%)",
       });
     }
-  }, [active]);
+  };
 
   const nextSlide = () => {
     if (active < images.length - 1) {
@@ -102,7 +123,7 @@ export const Slider: React.FC<Props> = ({ images }) => {
       </div>
       <div className="slider-elements">
         <ul className="dots" ref={dotsRef}>
-          {images.map(el => (
+          {images.map((el) => (
             <li key={el.id}></li>
           ))}
         </ul>
