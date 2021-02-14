@@ -18,8 +18,8 @@ export const Slider: React.FC<Props> = ({ images }) => {
   const prevActive = usePrevious(active);
   const imagesRef = useRef<HTMLDivElement>(null);
   const dotsRef = useRef<HTMLUListElement>(null);
+  const snapValueRef = useRef(0);
   const imageWidth = imagesRef.current?.offsetWidth;
-  let snapValue = 0;
 
   useEffect(() => {
     slideDotLeftAnimation();
@@ -44,13 +44,13 @@ export const Slider: React.FC<Props> = ({ images }) => {
         maxDuration: 0.2,
         bounds: { minX: -imageWidth * 3, maxX: 0, minY: 0, maxY: 680 },
         snap: (value) => {
-          snapValue = Math.round(value / imageWidth) * imageWidth;
+          snapValueRef.current = Math.round(value / imageWidth) * imageWidth;
           return Math.round(value / imageWidth) * imageWidth;
         },
         onThrowComplete: () => {
-          if (active < images.length - 1 && snapValue < -imageWidth * active) {
+          if (active < images.length - 1 && snapValueRef.current < -imageWidth * active) {
             setActive(active + 1);
-          } else if (active > 0 && snapValue > -imageWidth * active) {
+          } else if (active > 0 && snapValueRef.current > -imageWidth * active) {
             setActive(active - 1);
           }
         },
